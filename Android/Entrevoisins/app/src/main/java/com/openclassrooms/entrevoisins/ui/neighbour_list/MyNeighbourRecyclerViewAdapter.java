@@ -1,9 +1,12 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,16 +27,20 @@ import butterknife.ButterKnife;
 public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder> {
 
     private final List<Neighbour> mNeighbours;
+    private Context mContext;
 
-    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
+    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items,Context contex) {
         mNeighbours = items;
+        mContext=contex;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_neighbour, parent, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
@@ -49,6 +56,21 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new DeleteNeighbourEvent(neighbour));
+
+
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(mContext, DetailNeighbour.class);
+                intent.putExtra("neighbourg name",neighbour.getName());
+                intent.putExtra("adresse",neighbour.getAddress());
+                intent.putExtra("telephone",neighbour.getPhoneNumber());
+                intent.putExtra("aPropos",neighbour.getAboutMe());
+                intent.putExtra("photo",neighbour.getAvatarUrl());
+                mContext.startActivity(intent);
             }
         });
     }
@@ -71,4 +93,5 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
             ButterKnife.bind(this, view);
         }
     }
+
 }

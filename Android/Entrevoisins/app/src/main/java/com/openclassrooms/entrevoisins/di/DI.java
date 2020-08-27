@@ -6,7 +6,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 /**
  * Dependency injector to get instance of services
  */
-public class DI {
+public class    DI {
 
     private static NeighbourApiService service = new DummyNeighbourApiService();
 
